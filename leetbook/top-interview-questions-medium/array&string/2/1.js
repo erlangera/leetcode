@@ -22,3 +22,7 @@ var setZeroes = function (matrix) {
     }
   }
 };
+
+var setZeroes = function (matrix) {
+  // 另一解法就是先找一个0在利用其对应行和列存储信息
+};
