@@ -1,12 +1,13 @@
 /**
  * @param {number} numCourses
  * @param {number[][]} prerequisites
- * @return {boolean}
+ * @return {number[]}
  */
-var canFinish = function (numCourses, prerequisites) {
+var findOrder = function (numCourses, prerequisites) {
   function search(map, i, reach, path) {
     if (!map[i]) {
       reach[i] = true;
+      res.push(i);
       return true;
     }
     path.push(i);
@@ -16,6 +17,7 @@ var canFinish = function (numCourses, prerequisites) {
     }
 
     reach[i] = true;
+    res.push(i);
     path.pop();
     return true;
   }
@@ -28,9 +30,10 @@ var canFinish = function (numCourses, prerequisites) {
     }
   }
   const reach = Array(numCourses).fill(false);
+  const res = [];
   for (let i = 0; i < numCourses; ++i) {
-    if (!reach[i] && !search(map, i, reach, [])) return false;
+    if (!reach[i] && !search(map, i, reach, [])) return [];
   }
 
-  return true;
+  return res;
 };
