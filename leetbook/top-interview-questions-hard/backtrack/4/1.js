@@ -65,3 +65,46 @@ var isMatch = function (s, p) {
   }
   return false;
 };
+
+var isMatch = function (s, p) {
+  p = p.replace(/\*+/g, '*');
+  if (p === '') return s === '';
+  if (s === '') return p === '' || p === '*';
+
+  const dp = Array.from(Array(p.length), () => Array(s.length).fill(false));
+  for (let i = 0; i < p.length; ++i) {
+    for (let j = 0; j < s.length; ++j) {
+      switch (p[i]) {
+        case '?':
+          if (i === 0) {
+            dp[i][j] = j === 0;
+          } else if (j === 0) {
+            dp[i][j] = p.slice(0, i) === '*';
+          } else {
+            dp[i][j] = dp[i - 1][j - 1];
+          }
+          break;
+        case '*':
+          dp[i][j] =
+            i == 0
+              ? true
+              : dp[i - 1][j] || (j > 0 && (dp[i][j - 1] || dp[i - 1][j - 1]));
+          break;
+        default:
+          if (p[i] === s[j]) {
+            if (i === 0) {
+              dp[i][j] = j === 0;
+            } else if (j === 0) {
+              dp[i][j] = p.slice(0, i) === '*';
+            } else {
+              dp[i][j] = dp[i - 1][j - 1];
+            }
+          } else {
+            dp[i][j] = false;
+          }
+          break;
+      }
+    }
+  }
+  return dp[p.length - 1][s.length - 1];
+};
